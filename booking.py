@@ -1,4 +1,4 @@
-import os, smtplib
+import os, smtplib, json
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
@@ -19,7 +19,12 @@ def google_calendar_service():
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     if not creds or not creds.valid:
-        flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+        credentials_json = os.getenv("GOOGLE_CREDENTIALS")
+        if credentials_json:
+            flow = InstalledAppFlow.from_client_config(json.loads(credentials_json), SCOPES)
+        else:
+            # fallback na plik credentials.json (np. lokalnie)
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
         creds = flow.run_local_server(port=8080)
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
