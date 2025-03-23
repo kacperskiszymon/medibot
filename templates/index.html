@@ -94,4 +94,21 @@ function book(){
     fetch('/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})
     .then(res=>res.json()).then(data=>{alert(data.message);});
 }
+
+// Obsługa klawisza Enter dla pola chatu:
+document.getElementById("msg").addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+        askBot();
+    }
+});
+
+// Obsługa klawisza Enter dla formularza rezerwacji:
+document.getElementById("rez").addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+        book();
+    }
+});
 </script>
+
+</body>
+</html>
